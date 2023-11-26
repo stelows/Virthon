@@ -1,4 +1,0 @@
-colorama
-cryptography
-requests
-ttkthemes
