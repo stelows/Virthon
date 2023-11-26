@@ -25,6 +25,14 @@ async def update():
         if response.status_code == 200:
             data = response.json()
             return data["tag_name"], data["zipball_url"]
+        elif response.status_code == 403:
+            import tkinter as tk
+            from tkinter import messagebox
+            root = tk.Tk()
+            root.withdraw()
+            messagebox.showerror("Erreur Fatal", f"Ce message d'erreur arrive quand les informations demandées à la page github n'ont pas été communiquées au programme essayer de visiter le site {url} pour voir si quel qu'on que erreur arrive et envoyez son au créateur (rocket_league sur discord) via le serveur discord.gg/wojack.")
+            root.mainloop()
+            exit
     async def check_for_updates():
         current_version = version
         latest_version, download_url = await get_latest_release_info()
