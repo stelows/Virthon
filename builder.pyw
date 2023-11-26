@@ -17,7 +17,7 @@ destination_file2 = absolute_path
 destination_file = directory
 repository_owner = "stelows"
 repository_name = "Virthon"
-version = "0.0.0"
+version = "1.0.1"
 async def update():
     async def get_latest_release_info():
         url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/releases/latest"
